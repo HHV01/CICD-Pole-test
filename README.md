@@ -305,12 +305,10 @@ Ví dụ:
 
 Vì workflow đã chạy trên máy nội bộ, runner sẽ gọi được link này nếu máy đó đang cùng mạng hoặc đang bật VPN.
 
-Project hiện tại đã được sửa để chấp nhận cả:
+Project hiện tại sử dụng các biến môi trường chính:
 
-- `POLE_BASE_URL`, `POLE_TOKEN`
-- hoặc `VMS_BASE_URL`, `VMS_TOKEN`
-
-Nên bạn có thể dùng một trong hai kiểu đặt tên biến.
+- `POLE_BASE_URL`
+- `POLE_TOKEN`
 
 ## 13. Nếu bạn không biết chắc đang lỗi ở đâu thì kiểm tra theo thứ tự này
 
@@ -371,13 +369,13 @@ Repo này hiện đang chạy tốt cho bộ testcase Rule Engine, nhưng hoàn 
    - hiện đang sinh ra file:
      `postman/data/rule-engine-api-testcases.json`
    - nếu làm API khác, bạn có thể tạo file mới theo module khác, ví dụ:
-     `postman/data/camera-api-testcases.json`
+     `postman/data/module-khac-api-testcases.json`
 
 3. File Postman collection
    - hiện tại đang dùng:
      `postman/POLE_API.postman_collection.json`
    - nếu muốn tách riêng từng module, có thể tạo collection khác như:
-     `postman/CAMERA_API.postman_collection.json`
+     `postman/MODULE_KHAC_API.postman_collection.json`
      `postman/EVENT_API.postman_collection.json`
 
 4. Script sinh collection
@@ -412,34 +410,29 @@ Cách dễ nhất là:
 4. chạy local trước bằng Newman
 5. khi local pass rồi mới đưa lên GitHub Actions
 
-### Ví dụ nếu làm thêm Camera API
+### Ví dụ nếu làm thêm một module API khác
 
 Bạn có thể đi theo hướng này:
 
 - Excel:
-  `camera-api-testcases.xlsx`
+  `module-khac-api-testcases.xlsx`
 - JSON trung gian:
-  `postman/data/camera-api-testcases.json`
+  `postman/data/module-khac-api-testcases.json`
 - Collection:
-  `postman/CAMERA_API.postman_collection.json`
+  `postman/MODULE_KHAC_API.postman_collection.json`
 - Script sinh collection:
-  `scripts/camera-cases-to-postman.mjs`
+  `scripts/module-khac-cases-to-postman.mjs`
 
 Sau đó thêm script trong `package.json`, ví dụ:
 
 ```json
 {
   "scripts": {
-    "import:camera": "powershell -ExecutionPolicy Bypass -File scripts/extract-rule-engine-testcases.ps1 -ExcelPath \"C:\\duong-dan\\camera-api-testcases.xlsx\" -OutputPath \"postman/data/camera-api-testcases.json\" && node scripts/camera-cases-to-postman.mjs",
-    "test:camera": "node scripts/run-newman-and-report.mjs"
+    "import:module-khac": "powershell -ExecutionPolicy Bypass -File scripts/extract-rule-engine-testcases.ps1 -ExcelPath \"C:\\duong-dan\\module-khac-api-testcases.xlsx\" -OutputPath \"postman/data/module-khac-api-testcases.json\" && node scripts/module-khac-cases-to-postman.mjs",
+    "test:module-khac": "node scripts/run-newman-and-report.mjs"
   }
 }
 ```
-
-Lưu ý:
-
-- `test:camera` chỉ chạy đúng nếu bạn sửa `run-newman-and-report.mjs` để trỏ tới collection camera
-- hoặc bạn tách thêm một file runner riêng cho từng module
 
 ### Khi nào cần sửa ít, khi nào cần sửa nhiều?
 
