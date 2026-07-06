@@ -1,44 +1,44 @@
-# Huong Dan Tu Dau Den Cuoi: Excel -> Postman -> Newman -> GitHub Actions
+# Hướng Dẫn Từ Đầu Đến Cuối: Excel -> Postman -> Newman -> GitHub Actions
 
-Project nay giup doi cac test case API dang quan ly bang Excel thanh bo test tu dong co the:
+Project này giúp đổi các test case API đang quản lý bằng Excel thành bộ test tự động có thể:
 
-- chay tren may local
-- dua len Postman collection
-- chay bang Newman
-- tu dong chay tren GitHub Actions
+- chạy trên máy local
+- đưa lên Postman collection
+- chạy bằng Newman
+- tự động chạy trên GitHub Actions
 
-Tai lieu nay duoc viet cho nguoi moi, ke ca khi ban chua biet `script` la gi.
+Tài liệu này được viết cho người mới, kể cả khi bạn chưa biết `script` là gì.
 
-## 1. `script` la gi?
+## 1. `script` là gì?
 
-`Script` la mot file chua cac lenh duoc viet san de may tinh chay tu dong.
+`Script` là một file chứa các lệnh được viết sẵn để máy tính chạy tự động.
 
-Vi du:
+Ví dụ:
 
-- thay vi moi lan ban tu tay mo Postman va bam tung request
-- hoac tu tay doc Excel roi copy body vao Postman
+- thay vì mỗi lần bạn tự tay mở Postman và bấm từng request
+- hoặc tự tay đọc Excel rồi copy body vào Postman
 
-thi script se lam giup minh cac viec do.
+thì script sẽ làm giúp mình các việc đó.
 
-Trong project nay, script duoc dung de:
+Trong project này, script được dùng để:
 
-- doc file Excel testcase
-- tao Postman collection
-- chay Newman
-- tao file report HTML/XML/JSON
+- đọc file Excel testcase
+- tạo Postman collection
+- chạy Newman
+- tạo file report HTML/XML/JSON
 
-## 2. Luong tong the dang chay nhu the nao?
+## 2. Luồng tổng thể đang chạy như thế nào?
 
 ```text
 File Excel testcase
--> script doc Excel
--> tao Postman collection JSON
--> Newman chay collection
--> tao report
--> GitHub Actions tu dong chay lai khi push code len Git
+-> script đọc Excel
+-> tạo Postman collection JSON
+-> Newman chạy collection
+-> tạo report
+-> GitHub Actions tự động chạy lại khi push code lên Git
 ```
 
-## 3. Cau truc project
+## 3. Cấu trúc project
 
 ```text
 CICD/
@@ -58,188 +58,186 @@ CICD/
   README.md
 ```
 
-Y nghia nhanh:
+Ý nghĩa nhanh:
 
-- `postman/POLE_API.postman_collection.json`: file collection de Postman/Newman chay
-- `postman/env/dev.postman_environment.json`: noi khai bao `base_url`, `token`, `response_time_sla`
-- `scripts/`: noi chua cac file tu dong hoa
-- `reports/`: noi chua ket qua sau khi chay test
+- `postman/POLE_API.postman_collection.json`: file collection để Postman/Newman chạy
+- `postman/env/dev.postman_environment.json`: nơi khai báo `base_url`, `token`, `response_time_sla`
+- `scripts/`: nơi chứa các file tự động hóa
+- `reports/`: nơi chứa kết quả sau khi chạy test
 - `.github/workflows/api-tests.yml`: file GitHub Actions
 
-## 4. Chuan bi truoc khi chay
+## 4. Chuẩn bị trước khi chạy
 
-May can co:
+Máy cần có:
 
 - Node.js
 - npm
 - Git
 
-Neu dung Windows PowerShell thi nen chay `npm.cmd` thay vi `npm`.
+Nếu dùng Windows PowerShell thì nên chạy `npm.cmd` thay vì `npm`.
 
-## 5. Chay local tu dau den cuoi
+## 5. Chạy local từ đầu đến cuối
 
-Mo PowerShell tai thu muc:
+Mở PowerShell tại thư mục:
 
 ```powershell
-cd "C:\Users\VNTT\Desktop\QC VNTT\CICD"
+cd "C:\duong-dan-den-thu-muc-cua-ban\CICD"
 ```
 
-### Buoc 1: cai thu vien
+### Bước 1: cài thư viện
 
 ```powershell
 npm.cmd install
 ```
 
-Lenh nay cai Newman va cac thu vien can thiet.
+Lệnh này cài Newman và các thư viện cần thiết.
 
-### Buoc 2: tao Postman collection tu file Excel
+### Bước 2: tạo Postman collection từ file Excel
 
 ```powershell
 npm.cmd run import:rule-engine
 ```
 
-Lenh nay se:
+Lệnh này sẽ:
 
-- doc file Excel testcase
-- chuyen testcase thanh file JSON trung gian
-- tao file collection `postman/POLE_API.postman_collection.json`
+- đọc file Excel testcase
+- chuyển testcase thành file JSON trung gian
+- tạo file collection `postman/POLE_API.postman_collection.json`
 
-### Buoc 3: chay test API bang Newman
+### Bước 3: chạy test API bằng Newman
 
 ```powershell
 npm.cmd run test:api
 ```
 
-Lenh nay se:
+Lệnh này sẽ:
 
-- mo collection vua tao
-- goi cac API
-- so sanh ket qua thuc te voi testcase
-- tao report
+- mở collection vừa tạo
+- gọi các API
+- so sánh kết quả thực tế với testcase
+- tạo report
 
-### Buoc 4: xem ket qua
+### Bước 4: xem kết quả
 
-Mo file:
+Mở file:
 
-[reports/newman-report.html](<C:/Users/VNTT/Desktop/QC VNTT/CICD/reports/newman-report.html>)
+[reports/newman-report.html](reports/newman-report.html)
 
-Ban se thay:
+Bạn sẽ thấy:
 
-- ten testcase
-- API dung de lam gi
+- tên testcase
+- API dùng để làm gì
 - method
 - URL
 - expected result
 - actual result
-- message tra ve
+- message trả về
 - response body
 - pass/fail
 
-## 6. Dua collection len Postman
+## 6. Đưa collection lên Postman
 
-Neu ban muon dong bo collection len Postman cloud:
+Nếu bạn muốn đồng bộ collection lên Postman cloud:
 
 ```powershell
 $env:POSTMAN_API_KEY="API_KEY_CUA_BAN"
 npm.cmd run push:postman
 ```
 
-Luu y:
+Lưu ý:
 
-- khong commit API key len Git
-- chi de API key trong bien moi truong hoac secret
+- không commit API key lên Git
+- chỉ để API key trong biến môi trường hoặc secret
 
-## 7. Day project len Git
+## 7. Đẩy project lên Git
 
-Project nay da duoc push len repo:
+Project này đã được push lên repo:
 
 `https://github.com/HHV01/CICD-Pole-test.git`
 
-Nhanh dang dung:
+Nhánh đang dùng:
 
 `feature/rule-engine-api-cicd`
 
-Neu sau nay ban chinh sua code va muon push tiep:
+Nếu sau này bạn chỉnh sửa code và muốn push tiếp:
 
 ```powershell
 git status
 git add .
-git commit -m "Cap nhat CI/CD Rule Engine"
+git commit -m "Cập nhật CI/CD Rule Engine"
 git push
 ```
 
-## 8. GitHub Actions dang chay cai gi?
+## 8. GitHub Actions đang chạy cái gì?
 
 File workflow:
 
-[.github/workflows/api-tests.yml](<C:/Users/VNTT/Desktop/QC VNTT/CICD/.github/workflows/api-tests.yml>)
+[.github/workflows/api-tests.yml](.github/workflows/api-tests.yml)
 
-Khi ban push code len GitHub, workflow se:
+Khi bạn push code lên GitHub, workflow sẽ:
 
-1. lay code ve may runner cua ban
-2. cai thu vien bang `npm.cmd ci`
-3. chay `npm.cmd run test:api`
-4. upload report trong thu muc `reports/`
+1. lấy code về máy runner của bạn
+2. cài thư viện bằng `npm.cmd ci`
+3. chạy `npm.cmd run test:api`
+4. upload report trong thư mục `reports/`
 
-Trong project nay, workflow da duoc doi sang:
+Trong project này, workflow đã được đổi sang:
 
 ```yaml
 runs-on: [self-hosted, windows, x64]
 ```
 
-Dieu nay co nghia la GitHub se khong chay tren may chu cloud mac dinh nua, ma se cho 1 may Windows noi bo cua ban nhan job va chay.
+Điều này có nghĩa là GitHub sẽ không chạy trên máy chủ cloud mặc định nữa, mà sẽ cho một máy Windows nội bộ của bạn nhận job và chạy.
 
-## 9. Vi sao phai doi sang self-hosted runner?
+## 9. Vì sao phải đổi sang self-hosted runner?
 
-Log ban gui len cho thay job bi fail trong luc chay Newman.
+Nguyên nhân quan trọng nhất là:
 
-Nguyen nhan quan trong nhat o day la:
+- API của bạn đang dùng `http://100.70.72.120:7001`
+- đây là IP nội bộ / private network
+- GitHub-hosted runner ngoài internet thường không truy cập được IP này
 
-- API cua ban dang dung `http://100.70.72.120:7001`
-- day la IP noi bo / private network
-- GitHub-hosted runner ngoai internet thuong khong truy cap duoc IP nay
+Nói dễ hiểu:
 
-Noi de hieu:
+- máy của bạn ở công ty hoặc đang bật VPN thì gọi được
+- máy chủ GitHub trên cloud thì không ở trong mạng nội bộ của bạn
+- vì vậy nó không gọi tới API được
 
-- may cua ban o cong ty hoac dang bat VPN thi goi duoc
-- may chu GitHub tren cloud thi khong o trong mang noi bo cua ban
-- vi vay no khong goi toi API duoc
-
-Khi khong goi toi API duoc, Newman de ra loi kieu:
+Khi không gọi tới API được, Newman dễ ra lỗi kiểu:
 
 ```text
 expected undefined to be one of [404, 422]
 ```
 
-Thuc chat day khong phai API tra sai logic.
-Day la do job khong nhan duoc HTTP response that su.
+Thực chất đây không phải API trả sai logic.  
+Đây là do job không nhận được HTTP response thật sự.
 
-## 10. Cach cai self-hosted runner tren may Windows noi bo
+## 10. Cách cài self-hosted runner trên máy Windows nội bộ
 
-Ban lam dung thu tu nay:
+Bạn làm đúng thứ tự này:
 
-1. Mo repo GitHub cua ban:
+1. Mở repo GitHub của bạn:
    `https://github.com/HHV01/CICD-Pole-test`
 
-2. Vao:
+2. Vào:
    `Settings -> Actions -> Runners -> New self-hosted runner`
 
-3. Chon:
+3. Chọn:
    `Windows`
    `x64`
 
-4. GitHub se hien ra 3 nhom buoc:
+4. GitHub sẽ hiện ra 3 nhóm bước:
    `Download`
    `Configure`
    `Run`
 
-5. Tren may Windows trong mang noi bo, mo PowerShell va chay lan luot cac lenh GitHub dua ra.
+5. Trên máy Windows trong mạng nội bộ, mở PowerShell và chạy lần lượt các lệnh GitHub đưa ra.
 
-Thuong no se co dang nhu:
+Thường nó sẽ có dạng như:
 
 ```powershell
-mkdir actions-runner
-cd actions-runner
+mkdir C:\actions-runner
+cd C:\actions-runner
 Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/... -OutFile actions-runner-win-x64.zip
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 [System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD\actions-runner-win-x64.zip", "$PWD")
@@ -247,117 +245,117 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 .\run.cmd
 ```
 
-Neu `Invoke-WebRequest` loi nhung file zip van tai ve duoc, ban co the tiep tuc sau khi kiem tra thay file `.zip` da nam trong thu muc `C:\actions-runner`.
+Nếu `Invoke-WebRequest` báo lỗi nhưng file zip vẫn tải về được, bạn có thể tiếp tục sau khi kiểm tra thấy file `.zip` đã nằm trong thư mục `C:\actions-runner`.
 
-6. Token de chay `.\config.cmd` khong phai tu tao tay.
-   Token nay nam ngay trong trang `New self-hosted runner`, o dong lenh:
+6. Token để chạy `.\config.cmd` không phải tự tạo tay.  
+Token này nằm ngay trong trang `New self-hosted runner`, ở dòng lệnh:
 
 ```powershell
 .\config.cmd --url https://github.com/HHV01/CICD-Pole-test --token XXXXX
 ```
 
-Phan `XXXXX` sau `--token` chinh la token can dung.
+Phần `XXXXX` sau `--token` chính là token cần dùng.
 
-7. Khi GitHub hoi label, giu mac dinh hoac them:
+7. Khi GitHub hỏi label, giữ mặc định hoặc thêm:
    `windows`
    `x64`
    `internal-network`
 
-8. Sau khi xong, tren trang GitHub repo se thay runner o trang thai `Idle`
+8. Sau khi xong, trên trang GitHub repo sẽ thấy runner ở trạng thái `Idle`
 
-9. Luc nay ban push code hoac bam `Run workflow`, job se chay tren may noi bo do.
+9. Lúc này bạn push code hoặc bấm `Run workflow`, job sẽ chạy trên máy nội bộ đó.
 
-10. Dau hieu cai thanh cong:
+10. Dấu hiệu cài thành công:
 
 - `Runner successfully added`
 - `Connected to GitHub`
 - `Listening for Jobs`
 
-## 11. Neu muon runner tu chay nen ma khong can mo cua so
+## 11. Nếu muốn runner tự chạy nền mà không cần mở cửa sổ
 
-Sau khi test `.\run.cmd` chay on, ban co the cai no thanh service:
+Sau khi test `.\run.cmd` chạy ổn, bạn có thể cài nó thành service:
 
 ```powershell
 .\svc install
 .\svc start
 ```
 
-Khi do runner se tu dong chay cung Windows.
+Khi đó runner sẽ tự động chạy cùng Windows.
 
-## 12. Secrets can tao tren GitHub
+## 12. Secrets cần tạo trên GitHub
 
-Vao repo GitHub:
+Vào repo GitHub:
 
 `Settings -> Secrets and variables -> Actions`
 
-Luu y:
+Lưu ý:
 
-- phai bam tab `Secrets`
-- khong tao o tab `Variables`
+- phải bấm tab `Secrets`
+- không tạo ở tab `Variables`
 
-Tao cac secret:
+Tạo các secret:
 
 - `POLE_BASE_URL`
 - `POLE_TOKEN`
 
-Vi du:
+Ví dụ:
 
 - `POLE_BASE_URL = http://100.70.72.120:7001`
-- `POLE_TOKEN = <token neu API can>`
+- `POLE_TOKEN = <token nếu API cần>`
 
-Vi workflow da chay tren may noi bo, runner se goi duoc link nay neu may do dang cung mang hoac dang bat VPN.
+Vì workflow đã chạy trên máy nội bộ, runner sẽ gọi được link này nếu máy đó đang cùng mạng hoặc đang bật VPN.
 
-Project hien tai da duoc sua de chap nhan ca:
+Project hiện tại đã được sửa để chấp nhận cả:
 
 - `POLE_BASE_URL`, `POLE_TOKEN`
-- hoac `VMS_BASE_URL`, `VMS_TOKEN`
+- hoặc `VMS_BASE_URL`, `VMS_TOKEN`
 
-Nen ban co the dung mot trong hai kieu dat ten bien.
+Nên bạn có thể dùng một trong hai kiểu đặt tên biến.
 
-## 13. Neu ban khong biet chac dang loi o dau thi kiem tra theo thu tu nay
+## 13. Nếu bạn không biết chắc đang lỗi ở đâu thì kiểm tra theo thứ tự này
 
-1. Chay local bang `npm.cmd run test:api`
-2. Kiem tra may cai runner co goi duoc `http://100.70.72.120:7001` tren browser hoac Postman khong
-3. Kiem tra runner tren GitHub dang `Idle` hay `Offline`
-4. Kiem tra `POLE_BASE_URL` trong GitHub Secrets da dung chua
-5. Kiem tra API co can token khong
-6. Neu `config.cmd` hoac `run.cmd` khong ton tai, kiem tra lai buoc giai nen file zip
+1. Chạy local bằng `npm.cmd run test:api`
+2. Kiểm tra máy cài runner có gọi được `http://100.70.72.120:7001` trên browser hoặc Postman không
+3. Kiểm tra runner trên GitHub đang `Idle` hay `Offline`
+4. Kiểm tra `POLE_BASE_URL` trong GitHub Secrets đã đúng chưa
+5. Kiểm tra API có cần token không
+6. Nếu `config.cmd` hoặc `run.cmd` không tồn tại, kiểm tra lại bước giải nén file zip
 
-## 14. Lenh dung hang ngay
+## 14. Lệnh dùng hằng ngày
 
-Cap nhat testcase tu Excel:
+Cập nhật testcase từ Excel:
 
 ```powershell
 npm.cmd run import:rule-engine
 ```
 
-Chay test local:
+Chạy test local:
 
 ```powershell
 npm.cmd run test:api
 ```
 
-Dong bo collection len Postman:
+Đồng bộ collection lên Postman:
 
 ```powershell
 npm.cmd run push:postman
 ```
 
-Push code len Git:
+Push code lên Git:
 
 ```powershell
 git add .
-git commit -m "Cap nhat test case"
+git commit -m "Cập nhật test case"
 git push
 ```
 
-## 15. Ban can nho 3 y chinh
+## 15. Bạn cần nhớ 3 ý chính
 
-1. Excel la noi quan ly testcase goc.
-2. Postman/Newman la noi chay testcase tu dong.
-3. Voi API noi bo, GitHub Actions chi chay duoc khi dung `self-hosted runner`.
+1. Excel là nơi quản lý testcase gốc.
+2. Postman/Newman là nơi chạy testcase tự động.
+3. Với API nội bộ, GitHub Actions chỉ chạy được khi dùng `self-hosted runner`.
 
-Neu ban muon, buoc tiep theo minh co the sua them workflow de chi chay tren runner co label rieng, vi du:
+Nếu bạn muốn, bước tiếp theo mình có thể sửa thêm workflow để chỉ chạy trên runner có label riêng, ví dụ:
 
 ```yaml
 runs-on: [self-hosted, windows, x64, internal-network]
