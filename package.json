@@ -1,12 +1,12 @@
 {
-  "name": "vms-api-cicd-starter",
+  "name": "smartpole-api-cicd-starter",
   "version": "0.1.0",
   "private": true,
   "description": "Starter kit to run Rule Engine API test cases as Postman/Newman CI checks.",
   "scripts": {
     "import:rule-engine": "powershell -ExecutionPolicy Bypass -File scripts/extract-rule-engine-testcases.ps1 && node scripts/rule-engine-cases-to-postman.mjs",
     "test:api": "node scripts/run-newman-and-report.mjs",
-    "push:postman": "powershell -ExecutionPolicy Bypass -File scripts/push-to-postman-collection.ps1 -CollectionUid 20003634-389e83a5-3e8a-4c24-96c4-7653f7fcdef7 -SourcePath postman/VMS_API.postman_collection.json"
+    "push:postman": "powershell -ExecutionPolicy Bypass -File scripts/push-to-postman-collection.ps1 -CollectionUid 20003634-389e83a5-3e8a-4c24-96c4-7653f7fcdef7 -SourcePath postman/POLE_API.postman_collection.json"
   },
   "devDependencies": {
     "newman": "^6.2.1"

@@ -12,8 +12,8 @@ jobs:
   postman-api-tests:
     runs-on: ubuntu-latest
     env:
-      VMS_BASE_URL: ${{ secrets.VMS_BASE_URL }}
-      VMS_TOKEN: ${{ secrets.VMS_TOKEN }}
+      POLE_BASE_URL: ${{ secrets.POLE_BASE_URL }}
+      POLE_TOKEN: ${{ secrets.POLE_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4

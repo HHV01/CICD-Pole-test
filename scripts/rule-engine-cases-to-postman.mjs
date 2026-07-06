@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 const casesPath = process.argv[2] || "postman/data/rule-engine-api-testcases.json";
-const outputPath = process.argv[3] || "postman/VMS_API.postman_collection.json";
+const outputPath = process.argv[3] || "postman/POLE_API.postman_collection.json";
 const baseUrl = process.argv[4] || "http://100.70.72.120:7001";
 const cases = JSON.parse(fs.readFileSync(casesPath, "utf8").replace(/^\uFEFF/, ""));
 
@@ -104,6 +104,7 @@ function itemFromCase(testCase) {
           "const requestName = pm.info.requestName;",
           "",
           "pm.test(`${requestName} - testcase checks`, function () {",
+          "  pm.expect(pm.response, 'No HTTP response. Check base_url, network access, VPN, firewall, or self-hosted runner settings.').to.exist;",
           "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
           "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
           "  const responseText = pm.response.text();",

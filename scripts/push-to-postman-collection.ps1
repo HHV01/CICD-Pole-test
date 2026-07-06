@@ -5,7 +5,7 @@ param(
 
   [string]$CollectionUrl = "",
 
-  [string]$SourcePath = "postman/VMS_API.postman_collection.json",
+  [string]$SourcePath = "postman/POLE_API.postman_collection.json",
 
   [string]$BackupDirectory = "postman/backups",
 

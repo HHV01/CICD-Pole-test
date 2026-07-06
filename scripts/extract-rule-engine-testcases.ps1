@@ -1,5 +1,5 @@
 param(
-  [string]$ExcelPath = "C:\Users\VNTT\Desktop\QC VNTT\pole\repo-exam\reports\rule-engine-api-testcases.xlsx",
+  [string]$ExcelPath = "",
   [string]$SheetName = "Rule Engine API",
   [string]$OutputPath = "postman/data/rule-engine-api-testcases.json",
   [int]$HeaderRow = 11,
@@ -63,6 +63,20 @@ function Get-CanonicalHeader {
     'Notes' { return "notes" }
     default { return "" }
   }
+}
+
+if ([string]::IsNullOrWhiteSpace($ExcelPath)) {
+  $candidates = @(
+    $env:RULE_ENGINE_EXCEL_PATH,
+    "C:\Users\VNTT\Desktop\QC VNTT\pole\repo-exam\reports\rule-engine-api-testcases.xlsx",
+    (Join-Path (Get-Location) "rule-engine-api-testcases.xlsx")
+  ) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }
+
+  $ExcelPath = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+}
+
+if ([string]::IsNullOrWhiteSpace($ExcelPath)) {
+  throw "Missing ExcelPath. Hay truyen duong dan file Excel bang tham so -ExcelPath, hoac set bien moi truong RULE_ENGINE_EXCEL_PATH."
 }
 
 if (-not (Test-Path -LiteralPath $ExcelPath)) {
