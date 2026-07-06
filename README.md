@@ -176,12 +176,20 @@ File workflow:
 
 Khi ban push code len GitHub, workflow se:
 
-1. lay code ve may chu GitHub
-2. cai thu vien bang `npm ci`
-3. chay `npm run test:api`
+1. lay code ve may runner cua ban
+2. cai thu vien bang `npm.cmd ci`
+3. chay `npm.cmd run test:api`
 4. upload report trong thu muc `reports/`
 
-## 9. Vi sao GitHub Actions cua ban bi loi?
+Trong project nay, workflow da duoc doi sang:
+
+```yaml
+runs-on: [self-hosted, windows, x64]
+```
+
+Dieu nay co nghia la GitHub se khong chay tren may chu cloud mac dinh nua, ma se cho 1 may Windows noi bo cua ban nhan job va chay.
+
+## 9. Vi sao phai doi sang self-hosted runner?
 
 Log ban gui len cho thay job bi fail trong luc chay Newman.
 
@@ -206,35 +214,55 @@ expected undefined to be one of [404, 422]
 Thuc chat day khong phai API tra sai logic.
 Day la do job khong nhan duoc HTTP response that su.
 
-## 10. Cach xu ly dung cho truong hop cua ban
+## 10. Cach cai self-hosted runner tren may Windows noi bo
 
-Ban co 2 huong:
+Ban lam dung thu tu nay:
 
-### Cach 1: dung self-hosted runner
+1. Mo repo GitHub cua ban:
+   `https://github.com/HHV01/CICD-Pole-test`
 
-Day la cach phu hop nhat neu API chi mo trong mang noi bo.
+2. Vao:
+   `Settings -> Actions -> Runners -> New self-hosted runner`
 
-Y tuong:
+3. Chon:
+   `Windows`
+   `x64`
 
-- dung 1 may Windows trong cong ty
-- may do co the goi duoc `100.70.72.120:7001`
-- cai GitHub self-hosted runner tren may do
-- workflow se chay tren may cua ban thay vi chay tren server GitHub
+4. GitHub se hien ra 4 lenh. Tren may Windows trong mang noi bo, mo PowerShell va chay lan luot cac lenh do.
 
-Khi do GitHub Actions van su dung duoc, nhung request API se chay tu mang noi bo cua cong ty.
+Thuong no se co dang nhu:
 
-### Cach 2: mo API ra dia chi public
+```powershell
+mkdir actions-runner
+cd actions-runner
+Invoke-WebRequest -Uri https://github.com/actions/runner/releases/download/... -OutFile actions-runner-win-x64.zip
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::ExtractToDirectory("$PWD\actions-runner-win-x64.zip", "$PWD")
+.\config.cmd --url https://github.com/HHV01/CICD-Pole-test --token TOKEN_GITHUB_CAP
+.\run.cmd
+```
 
-Chi dung cach nay neu duoc phep ve bao mat.
+5. Khi GitHub hoi label, giu mac dinh hoac them:
+   `windows`
+   `x64`
+   `internal-network`
 
-Y tuong:
+6. Sau khi xong, tren trang GitHub repo se thay runner o trang thai `Idle`
 
-- doi `base_url` thanh domain/IP public
-- GitHub runner co the goi truc tiep
+7. Luc nay ban push code hoac bam `Run workflow`, job se chay tren may noi bo do.
 
-Neu API chua duoc public hoa thi cach nay thuong khong dung duoc.
+## 11. Neu muon runner tu chay nen ma khong can mo cua so
 
-## 11. Secrets can tao tren GitHub
+Sau khi test `.\run.cmd` chay on, ban co the cai no thanh service:
+
+```powershell
+.\svc install
+.\svc start
+```
+
+Khi do runner se tu dong chay cung Windows.
+
+## 12. Secrets can tao tren GitHub
 
 Vao repo GitHub:
 
@@ -250,6 +278,8 @@ Vi du:
 - `POLE_BASE_URL = http://100.70.72.120:7001`
 - `POLE_TOKEN = <token neu API can>`
 
+Vi workflow da chay tren may noi bo, runner se goi duoc link nay neu may do dang cung mang hoac dang bat VPN.
+
 Project hien tai da duoc sua de chap nhan ca:
 
 - `POLE_BASE_URL`, `POLE_TOKEN`
@@ -257,15 +287,15 @@ Project hien tai da duoc sua de chap nhan ca:
 
 Nen ban co the dung mot trong hai kieu dat ten bien.
 
-## 12. Neu ban khong biet chac dang loi o dau thi kiem tra theo thu tu nay
+## 13. Neu ban khong biet chac dang loi o dau thi kiem tra theo thu tu nay
 
 1. Chay local bang `npm.cmd run test:api`
-2. Neu local pass ma GitHub fail, kha nang cao la do mang/VPN/firewall
+2. Kiem tra may cai runner co goi duoc `http://100.70.72.120:7001` tren browser hoac Postman khong
 3. Kiem tra `POLE_BASE_URL` trong GitHub Secrets da dung chua
 4. Kiem tra API co can token khong
-5. Kiem tra runner la `ubuntu-latest` hay `self-hosted`
+5. Kiem tra runner tren GitHub dang `Idle` hay `Offline`
 
-## 13. Lenh dung hang ngay
+## 14. Lenh dung hang ngay
 
 Cap nhat testcase tu Excel:
 
@@ -293,10 +323,14 @@ git commit -m "Cap nhat test case"
 git push
 ```
 
-## 14. Ban can nho 3 y chinh
+## 15. Ban can nho 3 y chinh
 
 1. Excel la noi quan ly testcase goc.
 2. Postman/Newman la noi chay testcase tu dong.
-3. GitHub Actions chi chay duoc neu runner nhin thay API cua ban.
+3. Voi API noi bo, GitHub Actions chi chay duoc khi dung `self-hosted runner`.
 
-Neu local pass ma GitHub Actions fail voi IP `100.70.x.x`, gan nhu chac chan can doi sang `self-hosted runner`.
+Neu ban muon, buoc tiep theo minh co the sua them workflow de chi chay tren runner co label rieng, vi du:
+
+```yaml
+runs-on: [self-hosted, windows, x64, internal-network]
+```

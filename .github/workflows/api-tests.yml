@@ -10,7 +10,10 @@ on:
 
 jobs:
   postman-api-tests:
-    runs-on: ubuntu-latest
+    runs-on:
+      - self-hosted
+      - windows
+      - x64
     env:
       POLE_BASE_URL: ${{ secrets.POLE_BASE_URL }}
       POLE_TOKEN: ${{ secrets.POLE_TOKEN }}
@@ -24,12 +27,12 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm ci
+        run: npm.cmd ci
 
       - name: Run Postman collection with Newman
         env:
           RESPONSE_TIME_SLA: 2000
-        run: npm run test:api
+        run: npm.cmd run test:api
 
       - name: Upload API test report
         if: always()
