@@ -1,0 +1,39 @@
+name: API tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  postman-api-tests:
+    runs-on: ubuntu-latest
+    env:
+      VMS_BASE_URL: ${{ secrets.VMS_BASE_URL }}
+      VMS_TOKEN: ${{ secrets.VMS_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Postman collection with Newman
+        env:
+          RESPONSE_TIME_SLA: 2000
+        run: npm run test:api
+
+      - name: Upload API test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-report
+          path: reports/

@@ -1,0 +1,3161 @@
+{
+  "info": {
+    "_postman_id": "9a9e8c8e-1f62-4f41-9d62-8b9d56d41b9a",
+    "name": "CICD",
+    "description": "Generated from rule-engine-api-testcases.xlsx for Newman CI/CD.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "01. Read",
+      "item": [
+        {
+          "name": "[RE-READ-001] Lấy dashboard statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/stats",
+            "description": "Lấy dashboard statistics\nExcel row: 12\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-001\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-002] Lấy danh sách rule đang running",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/running",
+            "description": "Lấy danh sách rule đang running\nExcel row: 13\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-002\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-003] Lấy danh sách rule mặc định",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Lấy danh sách rule mặc định\nExcel row: 14\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-003\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-004] Filter rule theo category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?category=ENERGY_SAVING",
+            "description": "Filter rule theo category\nExcel row: 15\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-004\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-005] Filter rule theo configStatus",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?configStatus=ENABLED",
+            "description": "Filter rule theo configStatus\nExcel row: 16\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-005\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-006] Search rule theo tên",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?search=AUTO_RULE_ENGINE",
+            "description": "Search rule theo tên\nExcel row: 17\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-006\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-007] Pagination page=1 size=1",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?page=1&size=1",
+            "description": "Pagination page=1 size=1\nExcel row: 18\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-007\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-READ-008] Filter date range hợp lệ",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?dateFrom=2026-07-01T00%3A00%3A00Z&dateTo=2026-07-06T23%3A59%3A59Z",
+            "description": "Filter date range hợp lệ\nExcel row: 19\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-READ-008\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02. Lifecycle",
+      "item": [
+        {
+          "name": "[RE-LC-001] Tạo rule DRAFT tối thiểu",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Tạo rule DRAFT tối thiểu\nExcel row: 20\nExpected: 1. HTTP 201.\n2. Response trả object/data chứa rule id hoặc thông tin rule vừa tạo.\n3. Rule test có thể cleanup sau khi chạy.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_LC_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [201];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = true;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-001\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-002] Lấy chi tiết rule vừa tạo",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}",
+            "description": "Lấy chi tiết rule vừa tạo\nExcel row: 21\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-002\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-003] Cập nhật rule bằng PUT",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}",
+            "description": "Cập nhật rule bằng PUT\nExcel row: 22\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_LC_UPDATED_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"MEDIUM\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-003\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-004] Lấy config status",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/config-status",
+            "description": "Lấy config status\nExcel row: 23\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-004\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-005] Enable rule test",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/config-status",
+            "description": "Enable rule test\nExcel row: 24\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configStatus\": \"ENABLED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-005\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-006] Disable rule test sau khi đã enabled",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/config-status",
+            "description": "Disable rule test sau khi đã enabled\nExcel row: 25\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 422].\n2. Response không crash và không leak stack trace.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configStatus\": \"DISABLED\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-006\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-007] Validate rule config",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:validate",
+            "description": "Validate rule config\nExcel row: 26\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-007\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-008] Check conflicts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:check-conflicts",
+            "description": "Check conflicts\nExcel row: 27\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-008\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-009] Activate rule test",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:activate",
+            "description": "Activate rule test\nExcel row: 28\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 422].\n2. Response không crash và không leak stack trace.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"override\": false,\n  \"overrideTargets\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-009\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-010] Pause rule khi không có execution active",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:pause",
+            "description": "Pause rule khi không có execution active\nExcel row: 29\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-010\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-011] Resume rule khi không có execution active",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:resume",
+            "description": "Resume rule khi không có execution active\nExcel row: 30\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-011\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-012] Emergency stop khi không có execution active",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:stop",
+            "description": "Emergency stop khi không có execution active\nExcel row: 31\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-012\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-013] Cancel pending khi không có execution pending",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:cancel",
+            "description": "Cancel pending khi không có execution pending\nExcel row: 32\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-LC-013\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-LC-014] Lấy run history rule test",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/executions",
+            "description": "Lấy run history rule test\nExcel row: 33\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-LC-014\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03. Catalog",
+      "item": [
+        {
+          "name": "[RE-CAT-001] Lấy categories",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/categories",
+            "description": "Lấy categories\nExcel row: 34\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-001\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-002] Lấy classifications",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/classifications",
+            "description": "Lấy classifications\nExcel row: 35\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-002\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-003] Lấy condition parameters",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/parameters",
+            "description": "Lấy condition parameters\nExcel row: 36\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-003\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-004] Lấy condition parameters theo deviceType=led",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/parameters?deviceType=led",
+            "description": "Lấy condition parameters theo deviceType=led\nExcel row: 37\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-004\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-005] Lấy device actions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/device-actions",
+            "description": "Lấy device actions\nExcel row: 38\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-005\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-006] Lấy error codes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/error-codes",
+            "description": "Lấy error codes\nExcel row: 39\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-006\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-007] Lấy devices",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/devices",
+            "description": "Lấy devices\nExcel row: 40\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-007\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-008] Lấy devices type=led",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/devices?type=led",
+            "description": "Lấy devices type=led\nExcel row: 41\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-008\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CAT-009] Lấy metrics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/metrics",
+            "description": "Lấy metrics\nExcel row: 42\nExpected: 1. HTTP 200.\n2. Response là JSON hợp lệ.\n3. Không trả stack trace/database error/secret."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-CAT-009\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04. Edge & Negative",
+      "item": [
+        {
+          "name": "[RE-EDGE-001] List rules page=0",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?page=0",
+            "description": "List rules page=0\nExcel row: 43\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-001\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-002] List rules size=101",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?size=101",
+            "description": "List rules size=101\nExcel row: 44\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-002\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-003] List rules invalid category",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?category=INVALID",
+            "description": "List rules invalid category\nExcel row: 45\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-003\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-004] List rules invalid date",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules?dateFrom=not-a-date",
+            "description": "List rules invalid date\nExcel row: 46\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-004\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-005] Get nonexistent rule",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/not_found_auto_rule",
+            "description": "Get nonexistent rule\nExcel row: 47\nExpected: 1. HTTP status thuộc tập mong đợi: [404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-005\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-006] Create missing name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create missing name\nExcel row: 48\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": \"ENERGY_SAVING\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-006\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-007] Create missing category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create missing category\nExcel row: 49\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_MISSING_CATEGORY\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-007\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-008] Create empty name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create empty name\nExcel row: 50\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-008\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-009] Create name > 255 chars",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create name > 255 chars\nExcel row: 51\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-009\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-010] Create invalid category",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create invalid category\nExcel row: 52\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_BAD_CATEGORY_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"BAD\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-010\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-011] Create extra unknown field",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create extra unknown field\nExcel row: 53\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_EXTRA_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\",\n  \"unknownField\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-011\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-012] Create invalid trigger mode",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create invalid trigger mode\nExcel row: 54\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_BAD_TRIGGER_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\",\n  \"trigger\": {\n    \"mode\": \"BAD\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-012\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-013] Create intervalSec=0",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create intervalSec=0\nExcel row: 55\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_BAD_INTERVAL_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\",\n  \"trigger\": {\n    \"mode\": \"DURATION\",\n    \"intervalSec\": 0\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-013\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-014] Create full condition/action payload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create full condition/action payload\nExcel row: 56\nExpected: 1. HTTP 201.\n2. Response trả object/data chứa rule id hoặc thông tin rule vừa tạo.\n3. Rule test có thể cleanup sau khi chạy.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_FULL_PAYLOAD_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\",\n  \"trigger\": {\n    \"mode\": \"EVENT\"\n  },\n  \"conditionLogic\": {\n    \"groupOperator\": \"AND\",\n    \"groups\": [\n      {\n        \"operator\": \"AND\",\n        \"conditions\": [\n          {\n            \"deviceId\": \"dev_demo_led\",\n            \"parameter\": \"BRIGHTNESS\",\n            \"operator\": \"gte\",\n            \"value\": 70,\n            \"dataType\": \"Number\",\n            \"unit\": \"%\"\n          }\n        ]\n      }\n    ]\n  },\n  \"thenBlock\": {\n    \"executionMode\": \"SEQUENTIAL\",\n    \"actions\": [\n      {\n        \"target\": {\n          \"deviceType\": \"led\",\n          \"deviceId\": \"dev_demo_led\"\n        },\n        \"action\": {\n          \"type\": \"SET_BRIGHTNESS\",\n          \"parameters\": {\n            \"brightness_pct\": 80\n          }\n        },\n        \"execution\": {\n          \"cooldownSec\": 30,\n          \"durationSec\": 60\n        }\n      }\n    ]\n  },\n  \"missedTriggerPolicy\": \"skip\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [201];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = true;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-EDGE-014\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-015] Create XSS name",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create XSS name\nExcel row: 57\nExpected: 1. HTTP 201.\n2. Response trả object/data chứa rule id hoặc thông tin rule vừa tạo.\n3. Rule test có thể cleanup sau khi chạy.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<script>alert(1)</script> AUTO\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [201];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = true;",
+                  "const expectsNonEmptyError = false;",
+                  "const caseId = \"RE-EDGE-015\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-016] Create malformed JSON",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules",
+            "description": "Create malformed JSON\nExcel row: 58\nExpected: 1. HTTP status thuộc tập mong đợi: [400, 422].\n2. Response không crash và không leak stack trace.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\": ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [400,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-016\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-017] PUT nonexistent rule",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/not_found_auto_rule",
+            "description": "PUT nonexistent rule\nExcel row: 59\nExpected: 1. HTTP status thuộc tập mong đợi: [404, 422].\n2. Response không crash và không leak stack trace.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AUTO_RULE_ENGINE_PUT_NOT_FOUND_1783326286\",\n  \"description\": \"Auto test rule created by Codex; safe to delete.\",\n  \"category\": \"ENERGY_SAVING\",\n  \"priority\": \"LOW\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-017\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-018] PATCH invalid configStatus",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/config-status",
+            "description": "PATCH invalid configStatus\nExcel row: 60\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"configStatus\": \"BAD\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-018\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-019] PATCH missing configStatus",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}/config-status",
+            "description": "PATCH missing configStatus\nExcel row: 61\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-019\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-020] Activate invalid body type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}:activate",
+            "description": "Activate invalid body type\nExcel row: 62\nExpected: 1. HTTP 422 validation error.\n2. Response chỉ rõ lỗi dữ liệu đầu vào.\n3. Không tạo/sửa dữ liệu khi request invalid.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"override\": \"true\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [422];",
+                  "const expectsJson = true;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-020\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-021] Pause nonexistent rule",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/not_found_auto_rule:pause",
+            "description": "Pause nonexistent rule\nExcel row: 63\nExpected: 1. HTTP status thuộc tập mong đợi: [404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-021\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-022] Delete nonexistent rule",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/not_found_auto_rule",
+            "description": "Delete nonexistent rule\nExcel row: 64\nExpected: 1. HTTP status thuộc tập mong đợi: [404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-022\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-EDGE-023] Catalog parameters unknown deviceType",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/catalog/parameters?deviceType=unknown_type",
+            "description": "Catalog parameters unknown deviceType\nExcel row: 65\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-EDGE-023\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05. Cleanup",
+      "item": [
+        {
+          "name": "[RE-CLEANUP-001] Xóa rule test lifecycle",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}",
+            "description": "Xóa rule test lifecycle\nExcel row: 66\nExpected: 1. HTTP status thuộc tập mong đợi: [200, 404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [200,404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-CLEANUP-001\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        },
+        {
+          "name": "[RE-CLEANUP-002] Verify rule test đã xóa",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{base_url}}/api/v1/rules/{{rule_id}}",
+            "description": "Verify rule test đã xóa\nExcel row: 67\nExpected: 1. HTTP status thuộc tập mong đợi: [404, 422].\n2. Response không crash và không leak stack trace."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const expectedStatuses = [404,422];",
+                  "const expectsJson = false;",
+                  "const expectsCreatedObject = false;",
+                  "const expectsNonEmptyError = true;",
+                  "const caseId = \"RE-CLEANUP-002\";",
+                  "const responseTimeSla = Number(pm.environment.get('response_time_sla') || 2000);",
+                  "const requestName = pm.info.requestName;",
+                  "",
+                  "pm.test(`${requestName} - testcase checks`, function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf(expectedStatuses);",
+                  "  pm.expect(pm.response.responseTime).to.be.below(responseTimeSla);",
+                  "  const responseText = pm.response.text();",
+                  "  pm.expect(responseText).to.not.match(/Traceback|stack trace|SQLAlchemy|database error|password|secret|access_token/i);",
+                  "  if (expectsNonEmptyError) pm.expect(responseText.trim().length).to.be.greaterThan(0);",
+                  "  if (expectsJson || responseText.trim().length > 0) {",
+                  "    let jsonData;",
+                  "    try { jsonData = pm.response.json(); } catch (error) { if (expectsJson) throw new Error('Response is not valid JSON'); return; }",
+                  "    pm.expect(jsonData).to.be.an('object');",
+                  "    if (expectsCreatedObject) {",
+                  "      const data = jsonData.data || jsonData;",
+                  "      const createdId = data.id || data.ruleId || data._id;",
+                  "      pm.expect(createdId, 'created rule id').to.exist;",
+                  "      if (caseId === 'RE-LC-001') pm.collectionVariables.set('rule_id', createdId);",
+                  "    }",
+                  "  }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://100.70.72.120:7001"
+    },
+    {
+      "key": "rule_id",
+      "value": ""
+    }
+  ]
+}
