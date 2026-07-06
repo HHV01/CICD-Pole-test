@@ -228,7 +228,12 @@ Ban lam dung thu tu nay:
    `Windows`
    `x64`
 
-4. GitHub se hien ra 4 lenh. Tren may Windows trong mang noi bo, mo PowerShell va chay lan luot cac lenh do.
+4. GitHub se hien ra 3 nhom buoc:
+   `Download`
+   `Configure`
+   `Run`
+
+5. Tren may Windows trong mang noi bo, mo PowerShell va chay lan luot cac lenh GitHub dua ra.
 
 Thuong no se co dang nhu:
 
@@ -242,14 +247,31 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 .\run.cmd
 ```
 
-5. Khi GitHub hoi label, giu mac dinh hoac them:
+Neu `Invoke-WebRequest` loi nhung file zip van tai ve duoc, ban co the tiep tuc sau khi kiem tra thay file `.zip` da nam trong thu muc `C:\actions-runner`.
+
+6. Token de chay `.\config.cmd` khong phai tu tao tay.
+   Token nay nam ngay trong trang `New self-hosted runner`, o dong lenh:
+
+```powershell
+.\config.cmd --url https://github.com/HHV01/CICD-Pole-test --token XXXXX
+```
+
+Phan `XXXXX` sau `--token` chinh la token can dung.
+
+7. Khi GitHub hoi label, giu mac dinh hoac them:
    `windows`
    `x64`
    `internal-network`
 
-6. Sau khi xong, tren trang GitHub repo se thay runner o trang thai `Idle`
+8. Sau khi xong, tren trang GitHub repo se thay runner o trang thai `Idle`
 
-7. Luc nay ban push code hoac bam `Run workflow`, job se chay tren may noi bo do.
+9. Luc nay ban push code hoac bam `Run workflow`, job se chay tren may noi bo do.
+
+10. Dau hieu cai thanh cong:
+
+- `Runner successfully added`
+- `Connected to GitHub`
+- `Listening for Jobs`
 
 ## 11. Neu muon runner tu chay nen ma khong can mo cua so
 
@@ -267,6 +289,11 @@ Khi do runner se tu dong chay cung Windows.
 Vao repo GitHub:
 
 `Settings -> Secrets and variables -> Actions`
+
+Luu y:
+
+- phai bam tab `Secrets`
+- khong tao o tab `Variables`
 
 Tao cac secret:
 
@@ -291,9 +318,10 @@ Nen ban co the dung mot trong hai kieu dat ten bien.
 
 1. Chay local bang `npm.cmd run test:api`
 2. Kiem tra may cai runner co goi duoc `http://100.70.72.120:7001` tren browser hoac Postman khong
-3. Kiem tra `POLE_BASE_URL` trong GitHub Secrets da dung chua
-4. Kiem tra API co can token khong
-5. Kiem tra runner tren GitHub dang `Idle` hay `Offline`
+3. Kiem tra runner tren GitHub dang `Idle` hay `Offline`
+4. Kiem tra `POLE_BASE_URL` trong GitHub Secrets da dung chua
+5. Kiem tra API co can token khong
+6. Neu `config.cmd` hoac `run.cmd` khong ton tai, kiem tra lai buoc giai nen file zip
 
 ## 14. Lenh dung hang ngay
 
