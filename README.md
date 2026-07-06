@@ -349,7 +349,127 @@ git commit -m "Cập nhật test case"
 git push
 ```
 
-## 15. Bạn cần nhớ 3 ý chính
+## 15. Nếu muốn áp dụng cho API khác thì làm như thế nào?
+
+Repo này hiện đang chạy tốt cho bộ testcase Rule Engine, nhưng hoàn toàn có thể dùng tiếp cho API khác nếu bạn đi theo cùng cách tổ chức.
+
+### Những phần có thể giữ nguyên
+
+- GitHub Actions workflow trong `.github/workflows/api-tests.yml`
+- self-hosted runner
+- cách tạo `Secrets` trên GitHub
+- cách chạy Newman và sinh report
+- cấu trúc thư mục `postman/`, `scripts/`, `reports/`
+
+### Những phần cần thay đổi khi chuyển sang API khác
+
+1. File Excel testcase
+   - vẫn nên giữ cùng format cột như hiện tại
+   - nếu đổi format cột, cần sửa script `scripts/extract-rule-engine-testcases.ps1`
+
+2. File dữ liệu JSON trung gian
+   - hiện đang sinh ra file:
+     `postman/data/rule-engine-api-testcases.json`
+   - nếu làm API khác, bạn có thể tạo file mới theo module khác, ví dụ:
+     `postman/data/camera-api-testcases.json`
+
+3. File Postman collection
+   - hiện tại đang dùng:
+     `postman/POLE_API.postman_collection.json`
+   - nếu muốn tách riêng từng module, có thể tạo collection khác như:
+     `postman/CAMERA_API.postman_collection.json`
+     `postman/EVENT_API.postman_collection.json`
+
+4. Script sinh collection
+   - file hiện tại:
+     `scripts/rule-engine-cases-to-postman.mjs`
+   - file này đang có logic đặt tên folder theo mã case như:
+     `RE-READ`, `RE-LC`, `RE-EDGE`
+   - nếu API khác dùng prefix khác, cần sửa phần `groupName()` và các rule kiểm tra tương ứng
+
+5. Logic kiểm tra response
+   - hiện tại script đang kiểm tra theo kiểu phù hợp với Rule Engine:
+     - expected status
+     - response time
+     - response JSON
+     - một số điều kiện như `rule_id`
+   - nếu API khác có kiểu dữ liệu khác, flow khác, hoặc không có `rule_id`, cần sửa phần assertion trong:
+     `scripts/rule-engine-cases-to-postman.mjs`
+
+6. Environment variables
+   - hiện tại workflow đọc:
+     `POLE_BASE_URL`
+     `POLE_TOKEN`
+   - nếu API khác dùng base URL khác, chỉ cần đổi secret tương ứng hoặc tạo environment khác
+
+### Cách mở rộng an toàn nhất
+
+Cách dễ nhất là:
+
+1. copy bộ hiện tại của Rule Engine
+2. đổi tên file data / collection theo module mới
+3. chỉnh phần mapping testcase
+4. chạy local trước bằng Newman
+5. khi local pass rồi mới đưa lên GitHub Actions
+
+### Ví dụ nếu làm thêm Camera API
+
+Bạn có thể đi theo hướng này:
+
+- Excel:
+  `camera-api-testcases.xlsx`
+- JSON trung gian:
+  `postman/data/camera-api-testcases.json`
+- Collection:
+  `postman/CAMERA_API.postman_collection.json`
+- Script sinh collection:
+  `scripts/camera-cases-to-postman.mjs`
+
+Sau đó thêm script trong `package.json`, ví dụ:
+
+```json
+{
+  "scripts": {
+    "import:camera": "powershell -ExecutionPolicy Bypass -File scripts/extract-rule-engine-testcases.ps1 -ExcelPath \"C:\\duong-dan\\camera-api-testcases.xlsx\" -OutputPath \"postman/data/camera-api-testcases.json\" && node scripts/camera-cases-to-postman.mjs",
+    "test:camera": "node scripts/run-newman-and-report.mjs"
+  }
+}
+```
+
+Lưu ý:
+
+- `test:camera` chỉ chạy đúng nếu bạn sửa `run-newman-and-report.mjs` để trỏ tới collection camera
+- hoặc bạn tách thêm một file runner riêng cho từng module
+
+### Khi nào cần sửa ít, khi nào cần sửa nhiều?
+
+Sửa ít khi:
+
+- API mới vẫn dùng cùng format Excel
+- request/response đều là JSON
+- chỉ khác endpoint, method, body và expected status
+
+Sửa nhiều khi:
+
+- API mới có flow nhiều bước phụ thuộc nhau
+- cần login trước rồi mới gọi API
+- response không phải JSON
+- có upload file
+- có streaming
+- có xác thực khác Rule Engine
+
+### Kết luận cho phần mở rộng
+
+Repo này bây giờ đóng vai trò như một `starter kit` cho:
+
+- Excel testcase
+- Postman collection
+- Newman
+- self-hosted GitHub Actions
+
+Nó dùng rất tốt cho Rule Engine, và có thể mở rộng sang API khác mà không cần làm lại từ đầu.
+
+## 16. Bạn cần nhớ 3 ý chính
 
 1. Excel là nơi quản lý testcase gốc.
 2. Postman/Newman là nơi chạy testcase tự động.
